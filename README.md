@@ -1,5 +1,8 @@
 # ollama_ai_chatbox
 
+![2025-02-05-145518_739x589_scrot](https://github.com/user-attachments/assets/95519928-2c2d-4421-838b-4114de61b653)
+
+
 Developer: ThanCoder
 Version Name: beta-test-1
 
@@ -30,7 +33,8 @@ https://ollama.com/search
 အပေါ်က command ကို ollama run ထားပြီးရင် ထည့်ပေးလိုက်ပါ။
 ollama မ run သေးရင် ==> ollama serve <== ကိုရိုက်ပေးပါ။
 
-
+# app
+https://github.com/ThanCoder/ollama-ai-ui-chat-box/releases/tag/beta-test-v1
 
 
 
