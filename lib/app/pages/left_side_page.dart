@@ -54,7 +54,6 @@ class _ModelListState extends State<_ModelList> {
       setState(() {
         isLoading = true;
       });
-      await Future.delayed(Duration(milliseconds: 1200));
 
       final res = await http.get(Uri.parse(chaptModelApiUrl));
       final dynamic resObj = jsonDecode(res.body);
@@ -129,7 +128,13 @@ class _ModelListState extends State<_ModelList> {
             return ListTile(
               onTap: () => _setCurrent(model),
               textColor: model.isSelected ? Colors.teal : null,
-              title: Text(model.name),
+              title: Text(
+                model.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 13,
+                ),
+              ),
             );
           },
         ),

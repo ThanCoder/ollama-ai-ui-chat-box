@@ -17,15 +17,53 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   String resText = '';
   TextEditingController chatController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
   FocusNode chatFocusNode = FocusNode();
   StreamSubscription<String>? _subscription; // StreamSubscription ကို ထားမယ်
   bool isResponse = false;
   List<MessageModel> messageList = [];
+  bool isShowGoDownBtn = false;
+  bool isAutoScroll = true;
 
   @override
   void initState() {
+    // scrollController.addListener(_onScroll);
     super.initState();
     chatController.text = 'hello';
+  }
+
+  @override
+  void dispose() {
+    // scrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (scrollController.position.pixels !=
+        scrollController.position.maxScrollExtent) {
+      if (isAutoScroll) {
+        scrollController.position.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.bounceInOut,
+        );
+      }
+      if (isAutoScroll && isShowGoDownBtn) {
+        setState(() {
+          isShowGoDownBtn = false;
+        });
+      } else {
+        if (!isAutoScroll && !isShowGoDownBtn) {
+          setState(() {
+            isShowGoDownBtn = true;
+          });
+        }
+      }
+    } else {
+      setState(() {
+        isShowGoDownBtn = false;
+      });
+    }
   }
 
   void _chat() async {
@@ -66,6 +104,8 @@ class _ChatPageState extends State<ChatPage> {
             resText += res;
             messageList.last.text = resText;
           });
+
+          _onScroll();
         },
         onError: (error) {
           debugPrint("Streaming error: $error");
@@ -75,6 +115,7 @@ class _ChatPageState extends State<ChatPage> {
         },
         onDone: () {
           debugPrint("Streaming completed.");
+          isAutoScroll = false;
           setState(() {
             isResponse = false;
           });
@@ -96,6 +137,7 @@ class _ChatPageState extends State<ChatPage> {
       isResponse = false;
     });
     debugPrint("Streaming Stopped.");
+    isAutoScroll = false;
   }
 
   void _sendModel() {
@@ -146,6 +188,8 @@ class _ChatPageState extends State<ChatPage> {
                 //response
                 Expanded(
                   child: ListView.builder(
+                    controller: scrollController,
+                    addAutomaticKeepAlives: true,
                     // reverse: true,
                     itemCount: messageList.length,
                     itemBuilder: (context, index) {
@@ -169,41 +213,66 @@ class _ChatPageState extends State<ChatPage> {
                     },
                   ),
                 ),
+
                 //chat form
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 56, 56, 56),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    children: [
-                      //chat
-                      TextField(
-                        controller: chatController,
-                        focusNode: chatFocusNode,
-                        onSubmitted: (value) => _sendModel(),
+                Stack(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 56, 56, 56),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      //menu
-                      Row(
+                      child: Column(
                         children: [
-                          const Spacer(),
-                          //stop
-                          isResponse
-                              ? IconButton(
-                                  onPressed: _stopResponse,
-                                  icon: const Icon(Icons.stop_circle),
-                                )
-                              :
-                              //send
-                              IconButton(
-                                  onPressed: _sendModel,
-                                  icon: const Icon(Icons.send),
-                                ),
+                          //chat
+                          TextField(
+                            controller: chatController,
+                            focusNode: chatFocusNode,
+                            onSubmitted: (value) => _sendModel(),
+                          ),
+                          //menu
+                          Row(
+                            children: [
+                              const Spacer(),
+                              //stop
+                              isResponse
+                                  ? IconButton(
+                                      onPressed: _stopResponse,
+                                      icon: const Icon(Icons.stop_circle),
+                                    )
+                                  :
+                                  //send
+                                  IconButton(
+                                      onPressed: _sendModel,
+                                      icon: const Icon(Icons.send),
+                                    ),
+                            ],
+                          )
                         ],
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                    Positioned(
+                      child: //go button
+                          isShowGoDownBtn
+                              ? Center(
+                                  child: IconButton(
+                                    onPressed: () {
+                                      scrollController.position.animateTo(
+                                        scrollController
+                                            .position.maxScrollExtent,
+                                        duration:
+                                            const Duration(milliseconds: 800),
+                                        curve: Curves.bounceInOut,
+                                      );
+                                      isAutoScroll = true;
+                                    },
+                                    icon: Icon(Icons.arrow_downward_rounded),
+                                  ),
+                                )
+                              : Container(),
+                    ),
+                  ],
                 ),
               ],
             ),
