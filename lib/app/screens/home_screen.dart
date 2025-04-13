@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ollama_ai_chatbox/app/pages/chat_page.dart';
 import 'package:ollama_ai_chatbox/app/pages/left_side_page.dart';
-import 'package:ollama_ai_chatbox/app/widgets/my_scaffold.dart';
+import 'package:ollama_ai_chatbox/app/widgets/core/index.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

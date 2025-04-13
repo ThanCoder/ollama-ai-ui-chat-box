@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ListTileWithDesc extends StatelessWidget {
-  String title;
+class ListTileWithDescWidget extends StatelessWidget {
+  Widget widget1;
+  Widget widget2;
   String? desc;
-  Widget widget;
-  ListTileWithDesc({
+  double spacing;
+  ListTileWithDescWidget({
     super.key,
-    required this.title,
-    this.desc,
-    required this.widget,
+    required this.widget1,
+    required this.widget2,
+    this.spacing = 5,
   });
 
   @override
@@ -23,7 +24,7 @@ class ListTileWithDesc extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title),
+                  widget1,
                   desc != null ? const SizedBox(height: 5) : Container(),
                   desc != null
                       ? Text(
@@ -37,7 +38,7 @@ class ListTileWithDesc extends StatelessWidget {
                 ],
               ),
             ),
-            widget,
+            widget2,
           ],
         ),
       ),

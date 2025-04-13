@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:ollama_ai_chatbox/app/components/app_components.dart';
 import 'package:ollama_ai_chatbox/app/constants.dart';
+import 'package:ollama_ai_chatbox/app/general_server/general_server_noti_button.dart';
 import 'package:ollama_ai_chatbox/app/models/chat_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:ollama_ai_chatbox/app/notifiers/chat_notifier.dart';
-import 'package:ollama_ai_chatbox/app/widgets/t_loader.dart';
+import 'package:ollama_ai_chatbox/app/widgets/core/index.dart';
 
 class LeftSidePage extends StatelessWidget {
   const LeftSidePage({super.key});
@@ -16,6 +17,7 @@ class LeftSidePage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 10,
         children: [
           Expanded(
@@ -24,6 +26,8 @@ class LeftSidePage extends StatelessWidget {
           const Divider(),
           const Spacer(),
           //about
+          SizedBox(width: 50, height: 50, child: MyImageFile(path: '')),
+          GeneralServerNotiButton(),
           Text('Version Name: $appVersionName'),
           const Text('Developer: ThanCoder'),
         ],
@@ -119,24 +123,26 @@ class _ModelListState extends State<_ModelList> {
           ),
         ),
         const SizedBox(height: 10),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: modelList.length,
-          itemBuilder: (context, index) {
-            final model = modelList[index];
-            return ListTile(
-              onTap: () => _setCurrent(model),
-              textColor: model.isSelected ? Colors.teal : null,
-              title: Text(
-                model.name,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 13,
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: modelList.length,
+            itemBuilder: (context, index) {
+              final model = modelList[index];
+              return ListTile(
+                onTap: () => _setCurrent(model),
+                textColor: model.isSelected ? Colors.teal : null,
+                title: Text(
+                  model.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ],
     );

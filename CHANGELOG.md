@@ -1,5 +1,3 @@
-## 1.0.1
+## 0.0.1
 
-## Added
-- auto scroll ထပ်ထည့်
-- scroll down btn ထည့်
+- initial release for desktop app 

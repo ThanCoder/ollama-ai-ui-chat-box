@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ollama_ai_chatbox/app/constants.dart';
+
+import '../../constants.dart';
 
 class MyImageUrl extends StatelessWidget {
   String url;
@@ -7,6 +8,8 @@ class MyImageUrl extends StatelessWidget {
   BoxFit fit;
   double? width;
   double? height;
+  double borderRadius;
+
   MyImageUrl({
     super.key,
     required this.url,
@@ -14,10 +17,10 @@ class MyImageUrl extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.width,
     this.height,
+    this.borderRadius = 5,
   });
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _getImageWidget() {
     if (url.isEmpty) {
       return Image.asset(
         defaultAssetsPath,
@@ -48,5 +51,16 @@ class MyImageUrl extends StatelessWidget {
         },
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (borderRadius > 0) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: _getImageWidget(),
+      );
+    }
+    return _getImageWidget();
   }
 }

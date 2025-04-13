@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const appBrowserProxyHostUrl = 'https://node-browser.vercel.app';
+const appForwardProxyHostUrl = 'https://express-forward-proxy.vercel.app';
+
 //debug
 const isDebugPrint = false;
 
@@ -14,7 +17,7 @@ const chaptApiUrl = "http://localhost:11434/api/generate";
 */
 const chaptModelApiUrl = "http://localhost:11434/api/tags";
 //assets
-const defaultIconAssetsPath = 'assets/cover.webp';
+const defaultIconAssetsPath = 'assets/logo.png';
 //version name
 const appVersionName = 'beta-test-1';
 const appName = 'ollama_ai_chatbox';
